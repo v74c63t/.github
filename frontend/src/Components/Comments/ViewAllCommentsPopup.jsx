@@ -2,7 +2,7 @@ import Styles from './ViewAllCommentsPopup.module.css'
 import Comment from './Comment.jsx'
 import { useEffect, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-// import apiClient from '../../Services/apiClient'
+import apiClient from '../../Services/apiClient'
 import { Dialog, DialogContent, DialogTitle, DialogActions, Input } from '@mui/material'
 import { useAuthContext } from '../../Services/authProvider'
 
@@ -91,11 +91,11 @@ function ViewAllCommentsPopup ( { postId } ) {
   const { userId, username } = user
   const [comments, setComments] = useState([])
   
-  // function getPostComments(postId) {
-  //   apiClient.getPostComments(postId).then(res => {
-  //     setComments(res.data)
-  //   });
-  // }
+  function getPostComments(postId) {
+    apiClient.getPostComments(postId).then(res => {
+      setComments(res.data)
+    });
+  }
 
 
   function handleToggle() {
@@ -114,9 +114,9 @@ function ViewAllCommentsPopup ( { postId } ) {
     }
   }
 
-  useEffect(()=>{
-    setComments(test_comments)
-    // getPostComments(postId)
+  useEffect((getPostComments, postId)=>{
+    // setComments(test_comments)
+    getPostComments(postId)
   }, [])
 
   return (
@@ -135,12 +135,15 @@ function ViewAllCommentsPopup ( { postId } ) {
         </DialogTitle>
         <DialogContent className={Styles['dialog-container']}>
           {
-            comments.map((comment, i) =>
-              // key is temporary will replace with _id later
-              <Comment key={i} username={ comment.username } comment={ comment.comment } likes={comment.likes} />
-              // have to get the username of the person who commented for each comment
-              // problem is with how it is structured, it will require an extra call to get each username
-              // and for posts with a lot of commments, it may be inefficient and slow
+            // comments.map((comment, i) =>
+            //   // key is temporary will replace with _id later
+            //   <Comment key={i} username={ comment.username } comment={ comment.comment } likes={comment.likes} />
+            //   // have to get the username of the person who commented for each comment
+            //   // problem is with how it is structured, it will require an extra call to get each username
+            //   // and for posts with a lot of commments, it may be inefficient and slow
+            // )
+            comments.map((comment) =>
+              <Comment key={ comment._id } username={ comment.username } comment={ comment.commentText } likes={ comment.likes } />
             )
           }
         </DialogContent>
