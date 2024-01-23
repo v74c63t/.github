@@ -26,7 +26,7 @@ function ExamplePage () {
         <button onClick={fetchExampleMessage}> Click this button to show message</button>
         {message && <p>This is my message: {message}</p>}
       </div>
-      <ViewAllCommentsPopup />
+      <ViewAllCommentsPopup postId={"65af2b31109760f5fdb4466f"} />
     </div>
   )
 };
