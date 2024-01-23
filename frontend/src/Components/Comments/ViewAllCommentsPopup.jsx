@@ -90,7 +90,6 @@ function ViewAllCommentsPopup ( { postId } ) {
   const { user } = useAuthContext()
   var { userId, username } = user
   const [comments, setComments] = useState([])
-  const [getComments, setGetComments] = useState(true)
 
   userId = '65af2c4eba915118a4c98475' // temporary so it doesnt get erased during refresh
 
