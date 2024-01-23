@@ -88,15 +88,17 @@ function ViewAllCommentsPopup ( { postId } ) {
   const [open, setOpen] = useState(false)
   const [newComment, setNewComment] = useState('')
   const { user } = useAuthContext()
-  const { userId, username } = user
+  var { userId, username } = user
   const [comments, setComments] = useState([])
   const [getComments, setGetComments] = useState(true)
 
-  function getPostComments(postId) {
-    apiClient.getPostComments(postId).then(res => {
-      setComments(res.data.comments)
-    });
-  }
+  userId = '65af2c4eba915118a4c98475' // temporary so it doesnt get erased during refresh
+
+  // function getPostComments(postId) {
+  //   apiClient.getPostComments(postId).then(res => {
+  //     setComments(res.data.comments)
+  //   });
+  // }
   // const getPostComments = async () => {
   //   try {
   //       let response = await apiClient.getPostComments(postId)
@@ -149,26 +151,29 @@ function ViewAllCommentsPopup ( { postId } ) {
   }
 
   function handleAddNewComment (event) {
-    if(!getComments) {
-      if(event.keyCode === 13 && !event.shiftKey) {
-        event.preventDefault()
-        // console.log('Comment ', newComment)
-        // // call api to add comment
-        apiClient.addComment(userId, postId, newComment)
-        // test_comments.push({ username: username, comment: newComment, likes: 0 })
-        setNewComment('')
-        // console.log('add comment', getComments)
-        // getPostComments(postId)
-        // setGetComments(true)
-        // console.log('add comment2', getComments)
-      }
+    if(event.keyCode === 13 && !event.shiftKey) {
+      event.preventDefault()
+      // console.log('Comment ', newComment)
+      // // call api to add comment
+      apiClient.addComment(userId, postId, newComment)
+      // test_comments.push({ username: username, comment: newComment, likes: 0 })
+      setNewComment('')
+      // console.log('add comment', getComments)
+      // getPostComments(postId)
+      // setGetComments(true)
+      // console.log('add comment2', getComments)
     }
   }
 
   useEffect(()=>{
     // setComments(test_comments)
+    function getPostComments(postId) {
+      apiClient.getPostComments(postId).then(res => {
+        setComments(res.data.comments)
+      });
+    }
     getPostComments(postId)
-  }, [getPostComments, postId])
+  }, [postId])
 
   return (
     <div>
