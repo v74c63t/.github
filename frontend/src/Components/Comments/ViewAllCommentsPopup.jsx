@@ -92,57 +92,13 @@ function ViewAllCommentsPopup ( { postId } ) {
   const [comments, setComments] = useState([])
 
   userId = '65af2c4eba915118a4c98475' // temporary so it doesnt get erased during refresh
+  username = 'vt'
 
-  // function getPostComments(postId) {
-  //   apiClient.getPostComments(postId).then(res => {
-  //     setComments(res.data.comments)
-  //   });
-  // }
-  // const getPostComments = async () => {
-  //   try {
-  //       let response = await apiClient.getPostComments(postId)
-  //       let comments = response.data.comments;
-  //       setComments(comments)
-  //   } catch (error) {
-  //       console.error('Error fetching comments:', error);
-  //   }
-  // }
-  
-  // getPostComments()
-
-  // useEffect(() => {
-  //   // console.log('postId', postId)
-  //   // apiClient.getPostComments(postId).then(res => {
-  //   //   console.log('data', res.data.comments)
-  //   //   setComments(res.data.comments)
-  //   // })
-  //   // console.log('use effect', getComments)
-  //   // if(getComments) {
-  //   //   const getPostComments = async () => {
-  //   //     try {
-  //   //         let response = await apiClient.getPostComments(postId)
-  //   //         let comments = response.data.comments;
-  //   //         setComments(comments)
-  //   //     } catch (error) {
-  //   //         console.error('Error fetching comments: ', error);
-  //   //     }
-  //   //   }
-  //   //   getPostComments(postId)
-  //   // }
-  //   setGetComments(false)
-  //   // console.log('use effect2', getComments)
-  // }, [getComments])
-
-  // const getPostComments = async () => {
-  //   try {
-  //       let response = await apiClient.getPostComments(postId)
-  //       let comments = response.data.comments;
-  //       setComments(comments)
-  //   } catch (error) {
-  //       console.error('Error fetching comments:', error);
-  //   }
-  // }
-
+  function getPostComments(postId) {
+    apiClient.getPostComments(postId).then(res => {
+      setComments(res.data.comments)
+    });
+  }
 
   function handleToggle() {
     setOpen(!open)
@@ -152,27 +108,21 @@ function ViewAllCommentsPopup ( { postId } ) {
   function handleAddNewComment (event) {
     if(event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault()
-      // console.log('Comment ', newComment)
-      // // call api to add comment
-      apiClient.addComment(userId, postId, newComment)
-      // test_comments.push({ username: username, comment: newComment, likes: 0 })
-      setNewComment('')
-      // console.log('add comment', getComments)
-      // getPostComments(postId)
-      // setGetComments(true)
-      // console.log('add comment2', getComments)
+      if(newComment !== '') {
+        // console.log('Comment ', newComment)
+        // // call api to add comment
+        apiClient.addComment(userId, postId, newComment)
+        // test_comments.push({ username: username, comment: newComment, likes: 0 })
+        // getPostComments(postId)
+        setNewComment('')
+      }
     }
   }
 
   useEffect(()=>{
     // setComments(test_comments)
-    function getPostComments(postId) {
-      apiClient.getPostComments(postId).then(res => {
-        setComments(res.data.comments)
-      });
-    }
     getPostComments(postId)
-  }, [postId])
+  }, [postId, comments])
 
   return (
     <div>
@@ -198,7 +148,7 @@ function ViewAllCommentsPopup ( { postId } ) {
             //   // and for posts with a lot of commments, it may be inefficient and slow
             // )
             comments.map((comment) =>
-              <Comment key={ comment._id } username={ comment.username } comment={ comment.commentText } likes={ comment.likes.length } />
+              <Comment key={ comment._id } username={ username } comment={ comment.commentText } likes={ comment.likes.length } />
             )
           }
         </DialogContent>
