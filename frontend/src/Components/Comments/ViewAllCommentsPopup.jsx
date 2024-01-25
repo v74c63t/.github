@@ -100,6 +100,8 @@ function ViewAllCommentsPopup ( { postId } ) {
     });
   }
 
+  // getPostComments(postId)
+
   function handleToggle() {
     setOpen(!open)
     setNewComment('')
@@ -122,7 +124,20 @@ function ViewAllCommentsPopup ( { postId } ) {
   useEffect(()=>{
     // setComments(test_comments)
     getPostComments(postId)
-  }, [postId, comments])
+  }, [postId, comments]) 
+  // sends request to add comment and db is updated
+  // list is re rendered when there are updates but infinite requests
+  // comments are updated/re rendered almost immediately and it doesnt lag out
+
+  // useEffect(() => {
+  //   // getPostComments(postId)
+  // }, [postId]) // sends request to add comment and db is updated but nothing is re rendered
+
+  // useEffect(() => {
+  //   // moved everything outside and used getPostComments after new comment is added
+  //   // caused a lot of lag and infinite requests
+  //   // has a delay when it re renders the comments
+  // }, [comments])
 
   return (
     <div>
