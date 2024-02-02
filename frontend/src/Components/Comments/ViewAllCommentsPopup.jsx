@@ -90,6 +90,7 @@ function ViewAllCommentsPopup ( { postId } ) {
   const { user } = useAuthContext()
   var { userId, username } = user
   const [comments, setComments] = useState([])
+  // const [isFetching, setIsFetching] = useState(false)
 
   userId = '65af2c4eba915118a4c98475' // temporary so it doesnt get erased during refresh
   username = 'vt'
@@ -103,6 +104,7 @@ function ViewAllCommentsPopup ( { postId } ) {
   // getPostComments(postId)
 
   function handleToggle() {
+    getPostComments(postId)
     setOpen(!open)
     setNewComment('')
   }
@@ -117,27 +119,34 @@ function ViewAllCommentsPopup ( { postId } ) {
         // test_comments.push({ username: username, comment: newComment, likes: 0 })
         // getPostComments(postId)
         setNewComment('')
+        // setIsFetching(true)
       }
     }
   }
 
-  useEffect(()=>{
-    // setComments(test_comments)
-    getPostComments(postId)
-  }, [postId, comments]) 
+  // useEffect(()=>{
+  //   // setComments(test_comments)
+  //   getPostComments(postId)
+  // }, [postId, comments]) 
   // sends request to add comment and db is updated
   // list is re rendered when there are updates but infinite requests
   // comments are updated/re rendered almost immediately and it doesnt lag out
 
-  // useEffect(() => {
-  //   // getPostComments(postId)
-  // }, [postId]) // sends request to add comment and db is updated but nothing is re rendered
+  useEffect(() => {
+    getPostComments(postId)
+  }, [postId]) // sends request to add comment and db is updated but nothing is re rendered
 
   // useEffect(() => {
   //   // moved everything outside and used getPostComments after new comment is added
   //   // caused a lot of lag and infinite requests
   //   // has a delay when it re renders the comments
   // }, [comments])
+
+  // useEffect(()=> {
+  //   console.log('fetching')
+  //   getPostComments(postId)
+  //   setIsFetching(false)
+  // }, [postId, isFetching])
 
   return (
     <div>
